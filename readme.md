@@ -1,7 +1,11 @@
 
 Simple simulation/viewing the robot
 -----------
+
+![demo image of view_urdf](https://raw.githubusercontent.com/au-crustcrawler/au_crustcrawler_base/master/doc/view_urdf.png)
+
 `roslaunch au_crustcrawler_base view_urdf.launch`
+
 use the gui sliders to move the robot
 
 
