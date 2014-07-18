@@ -1,0 +1,133 @@
+<robot name="test_robot">
+	<!-- base height : 0.04m base width: 0.115m base depth: 0.115m base_arm_1 
+		width 0.1m base_arm_1 depth: 0.03m base_arm_1 heigth: 0.03m base_arm_2 length: 
+		0.08m lowerarm length: 0.17m lowerarm width: 0.03m lowerarm heigth: 0.04m 
+		middle_arm: 0.075m middle_arm_wrist offset 0.025 gripper length 0.17m mountplate 
+		0.08m width: 0.05m 
+		
+		joint1 positive left rotation (ok)
+		joint2 positive up 
+		joint3 positive down
+		joint4  positive right
+		
+		
+		-->
+	<link name="base">
+		<visual>
+			<origin xyz="0 0 0.02" rpy="0 0 0" />
+			<geometry>
+				<box size="0.115 0.115 0.04" />
+			</geometry>
+			<material name="red">
+				<color rgba="1 0 0 1" />
+			</material>
+		</visual>
+	</link>
+	
+	
+	<joint name="joint1" type="revolute">
+		<limit effort="1000.0" lower="-1.5" upper="1.5" velocity="1.0" />
+		<parent link="base" />
+		<child link="base_arm" />
+		<origin xyz=" 0 0 0.04" rpy="0 0 0" />
+		<axis xyz="0 0 1" />
+	</joint>
+	
+	<link name="base_arm">
+		<visual>
+			<origin xyz="0 0 0.015" rpy="0 0 0" />
+			<geometry>
+				<box size="0.03 0.1 0.03"/>
+			</geometry>
+			<material name="white">
+				<color rgba="1 1 1 1" />
+			</material>
+		</visual>
+	</link>
+	
+
+	<joint name="joint2" type="revolute">
+		<limit effort="1000.0" lower="-1.3" upper="2.2" velocity="1.0" />
+		<parent link="base_arm" />
+		<child link="lower_arm" />
+		<origin xyz="0.08 0 0.1" rpy="1.5707 -0.785398163 0" />
+		<axis xyz="0 0 1" />
+	</joint>
+	
+
+	<link name="lower_arm">
+		<visual>
+			<origin xyz="0.085 0 0 " rpy="0 0 0" />
+			<geometry>
+				<box size="0.17 0.03 0.03"></box>
+			</geometry>
+			<material name="cyan">
+				<color rgba="0 1 1 1" />
+			</material>
+		</visual>
+	</link>
+
+
+	<joint name="joint3" type="revolute">
+		<limit effort="1000.0" lower="-1.3" upper="2.2" velocity="1.0" />
+		<parent link="lower_arm" />
+		<child link="middle_arm" />
+		<origin xyz="0.17 0 0" rpy="3.1415 0 1.5707" />
+		<axis xyz="0 0 1" />
+	</joint>
+
+	
+	<link name="middle_arm">
+		<visual>
+			<origin xyz="0.015 0 0 " rpy="0 0 0" />
+			<geometry>
+				<box size="0.03 0.03 0.11" ></box>
+			</geometry>
+			<material name="blue">
+				<color rgba="0 0 1 1" />
+			</material>
+		</visual>
+	</link>
+	
+	<joint name="joint4" type="revolute">
+		<limit effort="1000.0" lower="-1.4" upper="1.4" velocity="1.0" />
+		<parent link="middle_arm" />
+		<child link="wrist" />
+		<origin xyz="0.035 0.025 0" rpy="0 1.5707 0" />
+		<axis xyz="0 0 1" />
+	</joint>
+
+	<link name="wrist">
+		<visual>
+			<origin xyz=" -0.02 0 0.025 " rpy="0 0 0" />
+			<geometry>
+				<box size="0.08 0.005 0.05"></box>
+			</geometry>
+			<material name="white">
+				<color rgba="1 1 1 1" />
+			</material>
+		</visual>
+	</link>
+	
+	
+	<joint name="gripper_linkage" type="fixed">
+		<parent link="wrist" />
+		<child link="gripper_link" />
+		<origin xyz="0.05 0 0" rpy="0 0 0" />
+	</joint>
+	
+	
+	<link name="gripper_link">
+		<visual>
+			<origin xyz="0 0.03 0" rpy="0 0 0" />
+			<geometry>
+				<box size="0.05 0.06 0.005"></box>
+			</geometry>
+			<material name="yellow">
+				<color rgba="1 0 1 1" />
+			</material>
+		</visual>
+	</link>
+	
+
+</robot>
