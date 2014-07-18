@@ -1,7 +1,7 @@
 
 Simple simulation/viewing the robot
 -----------
-'' roslaunch au_crustcrawler_base view_urdf.launch ''
+`roslaunch au_crustcrawler_base view_urdf.launch`
 use the gui sliders to move the robot
 
 
