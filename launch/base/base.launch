@@ -1,4 +1,13 @@
 <launch>
+<!-- 
+This launch file initialises the dynamixel motor manager and initialises and starts each joint.
+The configuration of each joint is specified in the au_crustcrawler_base/conf/joints.yaml
+
+This launch files gives access to each joint separately. 
+For a single access to all joints you must also launch the meta.launch which configures a 
+JointTrajectoryActionController for the joints. 
+
+ -->
 	<arg name="serial_port" />
 	
     <node name="dynamixel_manager" pkg="dynamixel_controllers" type="controller_manager.py" required="true" output="screen">
@@ -14,10 +23,15 @@
         </rosparam>
     </node>
     
-    <!-- Load controller configuration to parameter server -->
-    <rosparam file="$(find au_dynamixel_example)/conf/joints.yaml" command="load"/>
-    <rosparam file="$(find au_dynamixel_example)/conf/main_control.yaml" command="load"/>
+    <!-- 
+    	Load joint configuration to parameter server 
+    -->
+    <rosparam file="$(find au_crustcrawler_base)/conf/joints.yaml" command="load"/>
+    
 
+	<!-- 
+		Spawn each joint on the manager with the configuration from the parameter server
+	 -->
     <node name="dynamixel_controller_spawner2" pkg="dynamixel_controllers" type="controller_spawner.py"
           args="--manager=dxl_manager
                 --port=arm_port
