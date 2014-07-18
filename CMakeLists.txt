@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(au_dynamixel_example)
+project(au_crustcrawler_base)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -92,18 +92,18 @@ catkin_package(
 
 ## Declare a cpp library
 # add_library(au_dynamixel_example
-#   src/${PROJECT_NAME}/au_dynamixel_example.cpp
+#   src/${PROJECT_NAME}/au_crustcrawler_base.cpp
 # )
 
 ## Declare a cpp executable
-# add_executable(au_dynamixel_example_node src/au_dynamixel_example_node.cpp)
+# add_executable(au_crustcrawler_base_node src/au_crustcrawler_base_node.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(au_dynamixel_example_node au_dynamixel_example_generate_messages_cpp)
+# add_dependencies(au_crustcrawler_base_node au_dynamixel_example_generate_messages_cpp)
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(au_dynamixel_example_node
+# target_link_libraries(au_crustcrawler_base_node
 #   ${catkin_LIBRARIES}
 # )
 

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package>
-  <name>au_dynamixel_example</name>
+  <name>au_crustcrawler_base</name>
   <version>0.0.0</version>
-  <description>The au_dynamixel_example package</description>
+  <description>The au_crustcrawler_base package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag --> 
   <!-- Example:  -->
