@@ -65,9 +65,9 @@ gripper:
     joint_speed: 2.0
     motor:
         id: 7
-        init: 35
-        min: 0
-        max: 85
+        init: 512
+        min: 461
+        max: 690
 
 
 arm_controller:

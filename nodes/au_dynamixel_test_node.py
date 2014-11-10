@@ -48,7 +48,7 @@ class ActionExampleNode:
 		self.client.wait_for_server()
 		
 		self.client.send_goal(self.goal)
-
+		
 		self.client.wait_for_result()
 		print self.client.get_result()
 		
