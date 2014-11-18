@@ -26,7 +26,7 @@ of each joint on the robot. For each joint in the URDF file there is a correspon
  
 Instead of having a topic per joint e.g (/arm_controller/joint1 /arm_controller/joint2 ...) one can create a master controller 
 which provides a single action for commanding all joints. This makes it easier to synchronise commands and makes the code which commands
-the joints simpler. the main_control.yaml does exactly this.
+the joints simpler. The main_control.yaml does exactly this.
 
 Simple simulation/viewing the robot
 -----------
