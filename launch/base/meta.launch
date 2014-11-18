@@ -13,6 +13,7 @@
 				joint2
 				joint3
 				joint4
+				gripper
 				"
           output="screen"/>
 </launch>
