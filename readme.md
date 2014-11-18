@@ -3,6 +3,16 @@ Introduction
 This package provides an example of how to configure the dynamixel components and how to
 make a model of the robot arm. 
 
+Clone the aucrustcrawlerbase package:
+
+cd ~/catkin_ws/src
+git clone https://github.com/au-crustcrawler/au_crustcrawler_base.git
+
+Or if the folder exist just:
+
+cd ~/catkin_ws/src/au_crustcrawler_base/
+git pull
+
 The robot is described using URDF. The URDF file enables other
 ROS components to retrieve information about the robots configuration 
 e.g the joints (name of joint and their associated frame in the transform tree (tf)).
