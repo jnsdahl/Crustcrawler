@@ -8,6 +8,11 @@ Panels:
         - /Status1
         - /TF1
         - /TF1/Frames1
+        - /TF1/Frames1/gripper_end_effector1
+        - /TF1/Frames1/gripper_servo_base1
+        - /TF1/Frames1/middle_arm1
+        - /TF1/Frames1/wrist1
+        - /RobotModel1
       Splitter Ratio: 0.5
     Tree Height: 909
   - Class: rviz/Selection
@@ -176,7 +181,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 1.19469
+      Distance: 1.74651
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.06
         Stereo Focal Distance: 1
@@ -188,10 +193,10 @@ Visualization Manager:
         Z: 0
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.0197974
+      Pitch: 0.494797
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 4.68957
+      Yaw: 5.02457
     Saved: ~
 Window Geometry:
   Displays:
