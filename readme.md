@@ -40,11 +40,14 @@ after the meta has launched and exited again start the gui by
 
 You can now control the individual joints of the robot by using the sliders.
 
+In order to see the robot in rviz live do 
+	roslaunch au_crustcrawler_base view_urdf.launch simulate:=false
+
 
 Commanding the real robot from python.
 -----------
 
-	roslaunch au_crustcrawler_base base.launch serial_port:=/dev/ttyUSB0
+	roslaunch au_crustcrawler_base base.launch
 
 in another terminal after the base has been successfully brought up
 
