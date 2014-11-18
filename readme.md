@@ -6,11 +6,13 @@ make a model of the robot arm.
 Clone the aucrustcrawlerbase package:
 
 cd ~/catkin_ws/src
+
 git clone https://github.com/au-crustcrawler/au_crustcrawler_base.git
 
 Or if the folder exist just:
 
 cd ~/catkin_ws/src/au_crustcrawler_base/
+
 git pull
 
 The robot is described using URDF. The URDF file enables other
