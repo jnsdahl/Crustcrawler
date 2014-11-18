@@ -8,10 +8,6 @@ Panels:
         - /Status1
         - /TF1
         - /TF1/Frames1
-        - /TF1/Frames1/gripper_end_effector1
-        - /TF1/Frames1/gripper_servo_base1
-        - /TF1/Frames1/middle_arm1
-        - /TF1/Frames1/wrist1
         - /RobotModel1
       Splitter Ratio: 0.5
     Tree Height: 909
@@ -193,10 +189,10 @@ Visualization Manager:
         Z: 0
       Name: Current View
       Near Clip Distance: 0.01
-      Pitch: 0.494797
+      Pitch: 0.244797
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 5.02457
+      Yaw: 4.53957
     Saved: ~
 Window Geometry:
   Displays:
@@ -215,4 +211,4 @@ Window Geometry:
     collapsed: true
   Width: 1294
   X: 1045
-  Y: 56
+  Y: 57
