@@ -15,6 +15,18 @@ Or if the folder exist just:
 
 	git pull
 
+You will also need the quickui package which is done by 
+
+	cd ~/catkin_ws/src
+
+	git clone https://github.com/au-crustcrawler/quickui.git
+
+Remember to catkin_make your workspace and source devel/setup.bash
+
+	catkin_make
+	source devel/setup.bash
+
+
 The robot is described using URDF. The URDF file enables other
 ROS components to retrieve information about the robots configuration 
 e.g the joints (name of joint and their associated frame in the transform tree (tf)).
