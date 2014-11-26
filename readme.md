@@ -82,7 +82,23 @@ With the base robot interface up and running we can now use the
 action interface provided by the dynamixel controller. 
 
 	rosrun au_crustcrawler_base au_dynamixel_test_node.py
+	
+Calibrating individual robot
+-----------
+Dette gøres ved at sætte robotten i en position hvor de to dobbelt led er belastet.
+Derefter lukkes ros og man bruger i stedet
 
+	rosrun dynamixel_driver info_dump.py 2 3
+
+og
+
+	rosrun dynamixel_driver info_dump.py 4 5
+
+og ser offsettet i ticks mellem [2 og 3] og [4 og 5] og taster det in i au_crustcrawler_base/conf/joints.yaml
+	
+
+Example on controlling robot
+-----------
 see [au_dynamixel_test_node.py](https://github.com/au-crustcrawler/au_crustcrawler_base/blob/master/nodes/au_dynamixel_test_node.py) for an example of controlling the robot
 from python.
 

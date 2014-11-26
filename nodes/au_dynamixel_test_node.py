@@ -34,12 +34,12 @@ class ActionExampleNode:
 		self.joint_positions = [ 
 			JointTrajectoryPoint(positions=self.POS_UP_HOME,velocities=[0.5]*5 ,time_from_start=rospy.Duration(1)), 
 			JointTrajectoryPoint(positions=self.POS_UP_HOLD,velocities=[0.5]*5 ,time_from_start=rospy.Duration(5)),  
-			JointTrajectoryPoint(positions=self.POS_UP_PICK,velocities=[0.5]*5 ,time_from_start=rospy.Duration(6)), 
-			JointTrajectoryPoint(positions=self.POS_UP_PICK2,velocities=[0.5]*5 ,time_from_start=rospy.Duration(8)), 
-			JointTrajectoryPoint(positions=self.POS_UP_PICK_HOLD,velocities=[0.5]*5 ,time_from_start=rospy.Duration(10)), 
-			JointTrajectoryPoint(positions=self.POS_UP_RELEASE,velocities=[0.5]*5 ,time_from_start=rospy.Duration(13)), 
-			JointTrajectoryPoint(positions=self.POS_UP_RELEASE2,velocities=[0.5]*5 ,time_from_start=rospy.Duration(16)),
-			JointTrajectoryPoint(positions=self.POS_UP_HOME,velocities=[0.5]*5 ,time_from_start=rospy.Duration(19)),
+			JointTrajectoryPoint(positions=self.POS_UP_PICK,velocities=[0.5]*5 ,time_from_start=rospy.Duration(7)), 
+			JointTrajectoryPoint(positions=self.POS_UP_PICK2,velocities=[0.5]*5 ,time_from_start=rospy.Duration(12)), 
+			JointTrajectoryPoint(positions=self.POS_UP_PICK_HOLD,velocities=[0.5]*5 ,time_from_start=rospy.Duration(16)), 
+			JointTrajectoryPoint(positions=self.POS_UP_RELEASE,velocities=[0.5]*5 ,time_from_start=rospy.Duration(18)), 
+			JointTrajectoryPoint(positions=self.POS_UP_RELEASE2,velocities=[0.5]*5 ,time_from_start=rospy.Duration(22)),
+			JointTrajectoryPoint(positions=self.POS_UP_HOME,velocities=[0.5]*5 ,time_from_start=rospy.Duration(27)),
 			]
 		self.jt = JointTrajectory(joint_names=self.names, points=self.joint_positions)
 		self.goal = FollowJointTrajectoryGoal( trajectory=self.jt, goal_time_tolerance=rospy.Duration(10) )
