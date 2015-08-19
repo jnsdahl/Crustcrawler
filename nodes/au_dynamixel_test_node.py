@@ -14,7 +14,7 @@ import math
 def invkin(xyz):
 	"""
 	Python implementation of the the inverse kinematics for the crustcrawler
-	robot created by Peter. Adjust parameters (d1,a1,a2,d4) accordingly.
+	robot created by Peter (PAH). Adjust parameters (d1,a1,a2,d4) accordingly.
 	The robot model shown in rviz can be adjusted by editing au_crustcrawler_ax12.urdf
 	"""
 
