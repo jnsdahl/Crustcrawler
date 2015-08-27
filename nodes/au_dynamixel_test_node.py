@@ -14,8 +14,11 @@ import math
 def invkin(xyz):
 	"""
 	Python implementation of the the inverse kinematics for the crustcrawler
-	robot created by Peter (PAH). Adjust parameters (d1,a1,a2,d4) accordingly.
-	The robot model shown in rviz can be adjusted by editing au_crustcrawler_ax12.urdf
+	Input: xyz position
+	Output: Angels for each joint: q1,q2,q3,q4
+	
+	You might adjust parameters (d1,a1,a2,d4).
+	The robot model shown in rviz can be adjusted accordingly by editing au_crustcrawler_ax12.urdf
 	"""
 
 	d1 = 10.0; # cm (height of 2nd joint)
@@ -23,20 +26,9 @@ def invkin(xyz):
 	a2 = 20.0; # (distance between 2nd and 3rd joints)
 	d4 = 20.0; # (distance from 3rd joint to gripper center - all inclusive, ie. also 4th joint)
 
-	oc = xyz; # - d4*R*[0;0;1] ;
-	xc = xyz[0]*100.0; yc = xyz[1]*100.0; zc = xyz[2]*100.0;
+	# Insert code here!!!
 
-	q1 = math.atan2(xyz[1],xyz[0])
-
-	r2 = math.pow((xc - a1 * math.cos(q1) ),2) + math.pow(( yc - a1 * math.sin(q1) ) , 2); # radius squared - radius can never be negative, q1 accounts for this..
-	s = (zc - d1); # can be negative ! (below first joint height..)
-	D = ( r2 + math.pow(s,2) - math.pow(a2 , 2) - math.pow(d4,2))/(2.*a2*d4);   # Eqn. (3.44)
-
-	q3 = math.atan2(-math.sqrt(1-math.pow(D,2)), D); #  Eqn. (3.46)
-	q2 = math.atan2(s, math.sqrt(r2)) - math.atan2(d4*math.sin(q3), a2 + d4*math.cos(q3)); # Eqn. (3.47)
-	q4 = 0.0
-
-	return q1,q2,q3+math.pi/4,q4
+	return q1,q2,q3,q4
 
 class ActionExampleNode:
 
