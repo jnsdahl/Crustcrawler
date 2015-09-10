@@ -22,7 +22,7 @@ class ActionExampleNode:
 				"joint3",
 				"joint4"
 				]
-		# the list of xyz points we want to plan
+		# the list of joint positions
 		joint_positions = [
 		[0.0,  1.44, -1.17, 0],
 		[0.38, 1.13, -0.75, 0],
@@ -31,7 +31,7 @@ class ActionExampleNode:
 		# initial duration
 		dur = rospy.Duration(1)
 
-		# construct a list of joint positions by calling invkin for each xyz point
+		# construct a list of joint positions
 		for p in joint_positions:
 			jtp = JointTrajectoryPoint(positions=p,velocities=[0.5]*self.N_JOINTS ,time_from_start=dur)
 			dur += rospy.Duration(5)
