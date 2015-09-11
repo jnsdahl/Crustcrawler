@@ -27,7 +27,7 @@
 		<limit effort="1000.0" lower="-2.48" upper="2.48" velocity="0.2" />
 		<parent link="lower_arm" />
 		<child link="middle_arm" />
-		<origin xyz="0.20 0 0" rpy="3.145 0 0" /> <!-- a2 -->
+		<origin xyz="0.20 0 0" rpy="0 0 0" /> <!-- a2 -->
 		<axis xyz="0 0 1" />
 	</joint>
 
