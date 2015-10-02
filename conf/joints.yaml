@@ -25,7 +25,7 @@ joint2:
         max: 0
     motor_slave:
         id: 3
-        calibration_offset: -10
+        calibration_offset: -13
 
 joint3:
     controller:
@@ -37,11 +37,11 @@ joint3:
     motor_master:
         id: 4
         init: 512
-        min: 1023
-        max: 0
+        min: 923
+        max: 100
     motor_slave:
         id: 5
-        calibration_offset: 0
+        calibration_offset: -5
 
 joint4:
     controller:

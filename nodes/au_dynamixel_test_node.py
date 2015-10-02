@@ -24,17 +24,16 @@ class ActionExampleNode:
 				]
 		# the list of joint positions
 		joint_positions = [
-		[0.0,  1.44, -1.17, 0],
-		[0.38, 1.13, -0.75, 0],
-		[0.78, 1.06, -0.66, 0]
+		[1, 1, 1, 1],
+		[-1, -1, -1, -1],
 		]
 		# initial duration
-		dur = rospy.Duration(1)
+		dur = rospy.Duration(2)
 
 		# construct a list of joint positions
 		for p in joint_positions:
 			jtp = JointTrajectoryPoint(positions=p,velocities=[0.5]*self.N_JOINTS ,time_from_start=dur)
-			dur += rospy.Duration(5)
+			dur += rospy.Duration(2)
 			self.joint_positions.append(jtp)
 
 		self.jt = JointTrajectory(joint_names=self.names, points=self.joint_positions)
