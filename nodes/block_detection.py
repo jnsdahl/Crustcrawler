@@ -131,6 +131,9 @@ def get_from_webcam():
 
 def get_blocks():
     img = get_from_webcam()
+
+    #cv2.imshow('asd', img), cv2.waitKey(0)
+
     img = preprocess(img)
 
     return find_blocks(img)

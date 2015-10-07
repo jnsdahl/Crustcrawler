@@ -13,13 +13,17 @@ from trajectory_msgs.msg import JointTrajectory
 from math import atan2, cos, sin, sqrt, pi
 
 
-def transformation(xyz):
-    xc = xyz[0] / 9
-    yc = xyz[1] / 9
-    zc = -10
+def px2cm(px):
+    return px / 8.765
 
-    my_point = np.array([xc, yc, zc, 1])
-    my_point = my_point[:, None]
+
+def transformation(x, y):
+    x = px2cm(x)
+    y = px2cm(y)
+    z = -5
+
+    center = np.array([x, y, z, 1])
+    center = center[:, None]
 
     tx = -34
     ty = 35
@@ -30,10 +34,9 @@ def transformation(xyz):
     A = np.matrix([[1, 0, 0, tx], [0, cos(thetax), -sin(thetax), ty], [0, sin(thetax), cos(thetax), tz], [0, 0, 0, 1]])
     B = np.matrix([[cos(thetaz), sin(thetaz), 0, 0], [-sin(thetaz), cos(thetaz), 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]])
 
-    my_Newpoint = A.dot(my_point)
-    my_Newpoint = B.dot(my_Newpoint)
+    center = B.dot(A.dot(center))
 
-    return my_Newpoint[0], my_Newpoint[1], my_Newpoint[2]
+    return center[0], center[1], center[2]
 
 
 def gripper(value):
@@ -42,58 +45,47 @@ def gripper(value):
 
 
 def findAngle(point1, point2):
-
     x1 = point1[0]
     y1 = point1[1]
 
     x2 = point2[0]
     y2 = point2[1]
 
-    xy1_new = transformation([x1, y1, 10])
-    xy2_new = transformation([x2, y2, 10])
+    xy1_new = transformation(x1, y1)
+    xy2_new = transformation(x2, y2)
 
-    xv = xy1_new[0] - xy2_new[0]
-    yv = xy1_new[1] - xy2_new[1]
+    vector_x = xy1_new[0] - xy2_new[0]
+    vector_y = xy1_new[1] - xy2_new[1]
 
-    theta = atan2(yv, xv)
+    theta = atan2(vector_y, vector_x)
 
     return theta
 
 
-def invkin(xyz, theta):
-    """
-	Python implementation of the the inverse kinematics for the crustcrawler
-	Input: xyz position
-	Output: Angels for each joint: q1,q2,q3,q4
-	
-	You might adjust parameters (d1,a1,a2,d4).
-	The robot model shown in rviz can be adjusted accordingly by editing au_crustcrawler_ax12.urdf
-	"""
+def invkin(p, theta):
+    x = p[0]
+    y = p[1]
+    z = p[2]
 
-    d1 = 10.0  # cm (height of 2nd joint)
-    a1 = 0.0  # (distance along "y-axis" to 2nd joint)
-    a2 = 20.0  # (distance between 2nd and 3rd joints)
-    d4 = 20.0  # (distance from 3rd joint to gripper center - all inclusive, ie. also 4th joint)
+    d1 = 10.0   # cm (height of 2nd joint)
+    a1 = 0.0    # (distance along "y-axis" to 2nd joint)
+    a2 = 20.0   # (distance between 2nd and 3rd joints)
+    d4 = 20.0   # (distance from 3rd joint to gripper center - all inclusive, ie. also 4th joint)
 
-    # Insert code here!!!
-    xc = xyz[0]
-    yc = xyz[1]
-    zc = xyz[2]
-
-    q1 = atan2(yc, xc)
+    q1 = atan2(y, x)
 
     # calculation of q2 and q3
-    r2 = (xc - a1 * cos(q1)) ** 2 + (yc - a1 * sin(q1)) ** 2
-    s = (zc - d1)
+    r2 = (x - a1 * cos(q1)) ** 2 + (y - a1 * sin(q1)) ** 2
+    s = (z - d1)
     D = (r2 + s ** 2 - a2 ** 2 - d4 ** 2) / (2 * a2 * d4)
 
     q3 = atan2(-sqrt(1 - D ** 2), D)
 
-    q2 = atan2(s, sqrt(r2)) - atan2(d4 * sin(q3), a2 + d4 * cos(q3))
+    q2 = atan2(s, sqrt(r2)) - atan2(d4 * sin(q3), a2 + d4 * cos(q3)) - pi/2
 
-    q4 = theta - q1
+    q4 = theta + q1
 
-    return q1, q2 - pi / 2, q3, q4
+    return q1, q2, q3, q4
 
 
 class ActionExampleNode:
@@ -113,11 +105,10 @@ class ActionExampleNode:
         block = blocks[0]
 
         # the list of xyz points we want to plan
-        xyz_positions = [
+        xy_positions = [
             [
                 block[2][0] + (block[0][0] - block[2][0]) / 2,
-                block[3][1] + (block[1][1] - block[3][1]) / 2,
-                10
+                block[3][1] + (block[1][1] - block[3][1]) / 2
             ]
         ]
 
@@ -126,13 +117,11 @@ class ActionExampleNode:
         t2 = findAngle(block[1], block[2])
         theta = t1 if t1 < t2 else t2
 
-        print theta
-
         # Transformation
         xyz_newpositions = []
 
-        for i in xyz_positions:
-            xyz_newpositions.append(transformation(i))
+        for pos in xy_positions:
+            xyz_newpositions.append(transformation(pos[0], pos[1]))
 
 
         # initial duration
@@ -140,7 +129,8 @@ class ActionExampleNode:
 
         # construct a list of joint positions by calling invkin for each xyz point
         for p in xyz_newpositions:
-            jtp = JointTrajectoryPoint(positions=invkin(p, theta), velocities=[0.5] * self.N_JOINTS, time_from_start=dur)
+            joint_positions = invkin(p, theta)
+            jtp = JointTrajectoryPoint(positions=joint_positions, velocities=[0.5] * self.N_JOINTS, time_from_start=dur)
             dur += rospy.Duration(2)
             self.joint_positions.append(jtp)
 
@@ -151,11 +141,8 @@ class ActionExampleNode:
 
     def send_command(self):
         self.client.wait_for_server()
-        #print self.goal
         self.client.send_goal(self.goal)
-
         self.client.wait_for_result()
-        #print self.client.get_result()
 
 
 if __name__ == "__main__":
