@@ -11,11 +11,55 @@ from trajectory_msgs.msg import JointTrajectoryPoint
 from trajectory_msgs.msg import JointTrajectory
 from math import atan2, cos, sin, sqrt, pi
 
-def gripper(value):
-	pub = rospy.Publisher('/gripper/command', Float64)
-	pub.publish(Float64(value))
+def transformation(xyz):
+	xc = xyz[0];
+	yc = xyz[1];
+	zc = -10;
 
-def invkin(xyz):
+	my_point = np.array([xc, yc, zc, 1])
+	my_point = my_point[:, None]
+	print my_point
+
+	tx = -34;
+	ty = 35;
+	tz = 0;
+	thetax = pi;
+	thetaz = pi/2;
+	
+	A = np.matrix([[1, 0, 0, tx],[0, cos(thetax), -sin(thetax), ty],[0, sin(thetax), cos(thetax), tz],[0, 0, 0, 1]])
+	B = np.matrix([[cos(thetaz), sin(thetaz), 0, 0],[-sin(thetaz), cos(thetaz), 0, 0],[0, 0, 1, 0],[0, 0, 0, 1]])
+
+	my_Newpoint = A.dot(my_point)
+	my_Newpoint = B.dot(my_Newpoint)
+	print my_Newpoint
+
+	return my_Newpoint[0], my_Newpoint[1], my_Newpoint[2]
+
+def gripper(value):
+	grip_pub = rospy.Publisher('/gripper/command', Float64)
+	grip_pub.publish(Float64(value))
+
+def findAngle(vector):
+	x1 = vector[0][0]/9
+	x2 = vector[1][0]/9
+	y1 = vector[0][1]/9
+	y2 = vector[1][1]/9
+
+	xy1_new = transformation([x1, y1, 0])#[x1, y1]
+	xy2_new = transformation([x2, y2, 0])#[x2, y2]
+	
+	xv = xy1_new[0]-xy2_new[0]
+	yv = xy1_new[1]-xy2_new[1]
+	print 'det her er xv     ', xv, '     det her er yv     ', yv	
+
+	theta = Float64(atan2(yv, xv))
+	print'theta: ', theta
+
+	return theta
+
+	
+
+def invkin(xyz, theta = 0):
 	"""
 	Python implementation of the the inverse kinematics for the crustcrawler
 	Input: xyz position
@@ -48,44 +92,20 @@ def invkin(xyz):
 	q2 = atan2(s, sqrt(r2)) - atan2(d4 * sin(q3), a2 + d4* cos(q3));
 	
 	#calculation of q4
-	#r32 = R[3, 2];
-	#r23 = R[2, 3];
-	#c23 = cos(q2 + q3);
-	#q4 = atan2(r23 / c23, r32 / c23);		
+			
 	q4 = 0;
 	
 	
 
 	return q1, q2-pi/2 , q3, q4
 
-def transformation(xyz):
-	xc = xyz[0];
-	yc = xyz[1];
-	zc = -10;
 
-	my_point = np.array([xc, yc, zc, 1])
-	my_point = my_point[:, None]
-	print my_point
-
-	tx = -34;
-	ty = 35;
-	tz = 0;
-	thetax = pi;
-	thetaz = pi/2;
-	
-	A = np.matrix([[1, 0, 0, tx],[0, cos(thetax), -sin(thetax), ty],[0, sin(thetax), cos(thetax), tz],[0, 0, 0, 1]])
-	B = np.matrix([[cos(thetaz), sin(thetaz), 0, 0],[-sin(thetaz), cos(thetaz), 0, 0],[0, 0, 1, 0],[0, 0, 0, 1]])
-
-	my_Newpoint = A.dot(my_point)
-	my_Newpoint = B.dot(my_Newpoint)
-	print my_Newpoint
-
-	return my_Newpoint[0], my_Newpoint[1], my_Newpoint[2]
 
 class ActionExampleNode:
 
 	N_JOINTS = 4
 	def __init__(self,server_name):
+		
 		self.client = actionlib.SimpleActionClient(server_name, FollowJointTrajectoryAction)
 
 		self.joint_positions = []
@@ -96,9 +116,12 @@ class ActionExampleNode:
 				]
 		# the list of xyz points we want to plan
 		xyz_positions = [
-		[50, 15, 10]
+		[40, 15, 10]
 		]
 		
+		#findAngle q4
+		findAngle([[100, 100], [200, 200]])
+
 		#Transformation
 		xyz_newpositions = []
 	
@@ -118,8 +141,8 @@ class ActionExampleNode:
 		self.jt = JointTrajectory(joint_names=self.names, points=self.joint_positions)
 		self.goal = FollowJointTrajectoryGoal( trajectory=self.jt, goal_time_tolerance=dur+rospy.Duration(2) )
 		
-		gripper(1)
 		
+		gripper(0)
 		
 	def send_command(self):
 		self.client.wait_for_server()
