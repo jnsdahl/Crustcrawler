@@ -13,7 +13,7 @@ class Block:
     # Transforms a point on the image to the robot base frame
     def img2base_transform(self, x, y):
         # Transform point on image to table frame
-        point = np.array([ x / 8.765, y / 8.765, -5, 1])
+        point = np.array([ x / 8.765, y / 8.765, -10, 1])
         point = point[:, None]
 
         # Transform point in table frame to robot base frame

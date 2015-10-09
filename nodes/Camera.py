@@ -30,7 +30,10 @@ class Camera:
         blocks = []
         for i in range(0, len(all_corners)):
             block = Block(all_corners[i])
-            cv2.circle(img, (block.x, block.y), 2, (0, 0, 255), -1)
+
+            for j in range(0, 4):
+                cv2.circle(img, (all_corners[i][j][0], all_corners[i][j][1]), 3, (0, 0, 0), -1)
+
             blocks.append(block)
 
         cv2.imshow('Camera', img), cv2.waitKey(0)

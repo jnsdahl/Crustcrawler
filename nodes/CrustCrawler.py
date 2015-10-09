@@ -22,7 +22,7 @@ class CrustCrawler:
         rospy.sleep(.3)
 
     def close_gripper(self):
-        self.gripper_pub.publish(0.8)
+        self.gripper_pub.publish(0.6)
         rospy.sleep(.3)
 
     def inverse_kinematics(self, x, y, z, theta):
@@ -65,3 +65,4 @@ class CrustCrawler:
 
     def reset(self):
         self.move_to(0, 0, 50, 0)
+        rospy.sleep(1)

@@ -12,7 +12,11 @@ if __name__ == "__main__":
 
     crustCrawler.reset()
 
-    camera.get_blocks()
+    blocks = camera.get_blocks()
 
-    crustCrawler.open_gripper()
-    crustCrawler.close_gripper()
+    for block in blocks:
+        crustCrawler.move_to(block.x, block.y, block.z, block.theta)
+        crustCrawler.open_gripper()
+        crustCrawler.move_to(block.x, block.y, block.z - 12, block.theta)
+        crustCrawler.close_gripper()
+        crustCrawler.reset()
