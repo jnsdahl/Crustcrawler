@@ -10,8 +10,9 @@ if __name__ == "__main__":
     crustCrawler = CrustCrawler()
     camera = Camera()
 
-    camera.get_blocks(True)
-
     crustCrawler.reset()
+
+    camera.get_blocks()
+
     crustCrawler.open_gripper()
     crustCrawler.close_gripper()

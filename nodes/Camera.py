@@ -13,24 +13,27 @@ class Camera:
 
     def preprocess(self, img):
         # Crop to table
-        img = img[100:440, 30:635]
+        x = 0
+        y = 48
+        img = img[y:y+345, x:x+605]
 
         # Hide robot
-        cv2.rectangle(img, (220, 210), (380, 340), 0, -1)
+        cv2.rectangle(img, (220, 210), (380, 345), 0, -1)
 
         return img
 
-    def get_blocks(self, show=False):
+    def get_blocks(self):
         img = self.get_raw_image()
         img = self.preprocess(img)
-        corners = find_blocks(img)
-
-        if show:
-            cv2.imshow('Camera', img), cv2.waitKey(0)
+        all_corners = find_blocks(img)
 
         blocks = []
-        for i in range(0, len(corners)):
-            blocks.append(Block(corners))
+        for i in range(0, len(all_corners)):
+            block = Block(all_corners[i])
+            cv2.circle(img, (block.x, block.y), 2, (0, 0, 255), -1)
+            blocks.append(block)
+
+        cv2.imshow('Camera', img), cv2.waitKey(0)
 
         return blocks
 

@@ -1,3 +1,4 @@
+import numpy as np
 from math import atan2, cos, sin, pi
 
 class Block:
@@ -12,12 +13,8 @@ class Block:
     # Transforms a point on the image to the robot base frame
     def img2base_transform(self, x, y):
         # Transform point on image to table frame
-        point = np.array([
-            [x / 8.765],
-            [y / 8.765],
-            [-5],
-            [1]
-        ])
+        point = np.array([ x / 8.765, y / 8.765, -5, 1])
+        point = point[:, None]
 
         # Transform point in table frame to robot base frame
         tx = -34
@@ -52,7 +49,10 @@ class Block:
             corner1 = self.img2base_transform(block_corners[i][0], block_corners[i][1])
             corner2 = self.img2base_transform(block_corners[i+1][0], block_corners[i+1][1])
 
-            theta = atan2(corner1[1] - corner2[1], corner1[0] - corner2[0])
+            dx = corner1[0] - corner2[0]
+            dy = corner1[1] - corner2[1]
+
+            theta = atan2(dy, dx)
 
             if theta < min_theta or i == 0:
                 min_theta = theta
