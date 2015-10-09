@@ -39,9 +39,9 @@ def transformation(x, y):
     return center[0], center[1], center[2]
 
 
-def gripper(value):
-    grip_pub = rospy.Publisher('/gripper/command', Float64)
-    grip_pub.publish(Float64(value))
+#def gripper(value):
+    #grip_pub = rospy.Publisher('/gripper/command', Float64)
+    #grip_pub.publish(Float64(value))
 
 
 def findAngle(point1, point2):
@@ -94,6 +94,7 @@ class ActionExampleNode:
     def __init__(self, server_name):
 
         self.client = actionlib.SimpleActionClient(server_name, FollowJointTrajectoryAction)
+	self.joint_cmd_pub = rospy.Publisher("/gripper/command", Float64)
 
         self.joint_positions = []
         self.names = ["joint1",
@@ -137,13 +138,14 @@ class ActionExampleNode:
         self.jt = JointTrajectory(joint_names=self.names, points=self.joint_positions)
         self.goal = FollowJointTrajectoryGoal(trajectory=self.jt, goal_time_tolerance=dur + rospy.Duration(2))
 
-        gripper(0)
+       
 
     def send_command(self):
-        self.client.wait_for_server()
-        self.client.send_goal(self.goal)
+	self.joint_cmd_pub.publish(0.1)        
+	self.client.wait_for_server()     
+	self.client.send_goal(self.goal)
         self.client.wait_for_result()
-
+	self.joint_cmd_pub.publish(0.9)
 
 if __name__ == "__main__":
     rospy.init_node("au_dynamixel_test_node")
@@ -151,3 +153,4 @@ if __name__ == "__main__":
     node = ActionExampleNode("/arm_controller/follow_joint_trajectory")
 
     node.send_command()
+    
