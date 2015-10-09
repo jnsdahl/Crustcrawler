@@ -1,10 +1,17 @@
 #!/usr/bin/env python
 
-import cv2
+import rospy
+from CrustCrawler import CrustCrawler
 from Camera import Camera
 
-cam = Camera()
+if __name__ == "__main__":
+    rospy.init_node("au_dynamixel_test_node")
 
-cam.get_blocks(True)
+    crustCrawler = CrustCrawler()
+    camera = Camera()
 
-cv2.waitKey(0)
+    camera.get_blocks(True)
+
+    crustCrawler.reset()
+    crustCrawler.open_gripper()
+    crustCrawler.close_gripper()

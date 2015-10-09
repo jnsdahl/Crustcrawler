@@ -2,6 +2,8 @@ import cv2
 import numpy as np
 import urllib
 from block_detection import find_blocks
+from Block import Block
+
 
 
 class Camera:
@@ -18,13 +20,17 @@ class Camera:
 
         return img
 
-    def get_blocks(self, show = False):
+    def get_blocks(self, show=False):
         img = self.get_raw_image()
         img = self.preprocess(img)
-        blocks = find_blocks(img)
+        corners = find_blocks(img)
 
         if show:
-            cv2.imshow('Camera', img)
+            cv2.imshow('Camera', img), cv2.waitKey(0)
+
+        blocks = []
+        for i in range(0, len(corners)):
+            blocks.append(Block(corners))
 
         return blocks
 

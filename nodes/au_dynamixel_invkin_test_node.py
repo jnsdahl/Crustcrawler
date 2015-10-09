@@ -94,7 +94,7 @@ class ActionExampleNode:
     def __init__(self, server_name):
 
         self.client = actionlib.SimpleActionClient(server_name, FollowJointTrajectoryAction)
-	self.joint_cmd_pub = rospy.Publisher("/gripper/command", Float64)
+        self.joint_cmd_pub = rospy.Publisher("/gripper/command", Float64)
 
         self.joint_positions = []
         self.names = ["joint1",
