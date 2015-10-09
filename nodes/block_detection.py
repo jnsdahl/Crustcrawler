@@ -1,11 +1,5 @@
-#!/usr/bin/env python
 import cv2
 import numpy as np
-import urllib
-
-DEBUG = False
-if __name__ == "__main__":
-    DEBUG = True
 
 
 def draw_contours(contours, hierarchy, image, parent=-1, level=0):
@@ -68,16 +62,6 @@ def blocks_from_contour_tree(contours, hierarchy, parent=-1):
     return blocks
 
 
-def preprocess(img):
-    # Crop to table
-    img = img[100:440, 30:635]
-
-    # Hide robot
-    cv2.rectangle(img, (220, 210), (380, 340), 0, -1)
-
-    return img
-
-
 def find_blocks(image):
     img = image
 
@@ -115,25 +99,3 @@ def find_blocks(image):
     blocks = blocks_from_contour_tree(contours, hierarchy[0])
 
     return blocks
-
-
-def get_from_webcam():
-    stream = urllib.urlopen('http://192.168.0.20/image/jpeg.cgi')
-    bytes = ''
-    bytes += stream.read(64500)
-    a = bytes.find('\xff\xd8')
-    b = bytes.find('\xff\xd9')
-
-    if a != -1 and b != -1:
-        jpg = bytes[a:b+2]
-        return cv2.imdecode(np.fromstring(jpg, dtype=np.uint8), cv2.CV_LOAD_IMAGE_COLOR)
-
-
-def get_blocks():
-    img = get_from_webcam()
-
-    #cv2.imshow('asd', img), cv2.waitKey(0)
-
-    img = preprocess(img)
-
-    return find_blocks(img)
