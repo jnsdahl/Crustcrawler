@@ -2,7 +2,7 @@ import numpy as np
 from math import atan2, cos, sin, pi
 
 class Block:
-    def __init__(self, corners):
+    def __init__(self, corners, img):
         x1 = corners[0][0]
         x2 = corners[1][0]
         x3 = corners[2][0]
@@ -22,8 +22,27 @@ class Block:
         xc = (b2-b1)/float(a1-a2)
         yc = a1*xc+b1
 
+        color = [0, 0, 0]
+        c = 0
+
+        for y in range(int(yc)-5, int(yc)+5):
+            for x in range(int(xc)-5, int(xc)+5):
+                c += 1
+                color[0] += img[y, x][0]
+                color[1] += img[y, x][1]
+                color[2] += img[y, x][2]
+
+        color[0] = color[0]/c
+        color[1] = color[1]/c
+        color[2] = color[2]/c
+
+        self.color = color
         self.x, self.y, self.z = self.img2base_transform(xc, yc)
         self.thetas = self.find_orientations(corners)
+
+    def same_color(self, color):
+        th = 1000
+        return abs(self.color[0] - color[0]) < th and abs(self.color[1] - color[1]) < th and abs(self.color[2] - color[2]) < th
 
     # Transforms a point on the image to the robot base frame
     def img2base_transform(self, x, y):

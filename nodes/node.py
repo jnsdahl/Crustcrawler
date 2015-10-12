@@ -21,11 +21,12 @@ if __name__ == "__main__":
             break
 
         for block in blocks:
-            if len(right) == 0:
-                crustCrawler.place_block_right(block)
+            if len(right) == 0 or block.same_color(right[0].color):
+                crustCrawler.place_block_right(block, len(right))
                 right.append(block)
             else:
-                crustCrawler.place_block_left(block)
+                crustCrawler.place_block_left(block, len(left))
+                left.append(block)
 
 
 

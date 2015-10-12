@@ -83,11 +83,11 @@ class CrustCrawler:
         self.open_gripper()
         self.move_to(x, y, 10, [0, 0])
 
-    def place_block_right(self, block):
-        self.place_block(block, 0, 20)
+    def place_block_right(self, block, position):
+        self.place_block(block, 0, -10 - 10 * position)
 
-    def place_block_left(self, block):
-        self.place_block(block, 0, -20)
+    def place_block_left(self, block, position):
+        self.place_block(block, 0, 10 + 10 * position)
 
     def reset(self):
         self.move_to(0, 0, 50, [0, 0])

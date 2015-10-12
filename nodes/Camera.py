@@ -23,13 +23,12 @@ class Camera:
         return img
 
     def get_blocks(self):
-        img = self.get_raw_image()
-        img = self.preprocess(img)
+        img = self.preprocess(self.get_raw_image())
         all_corners = find_blocks(img)
 
         blocks = []
         for i in range(0, len(all_corners)):
-            block = Block(all_corners[i])
+            block = Block(all_corners[i], img)
 
             for j in range(0, 4):
                 cv2.circle(img, (all_corners[i][j][0], all_corners[i][j][1]), 3, (0, 0, 0), -1)
