@@ -33,6 +33,8 @@ class CrustCrawler:
 
         q1 = atan2(y, x)
 
+        print "q1: " + str(q1 * 180 / pi)
+
         # calculation of q2 and q3
         r2 = (x - a1 * cos(q1)) ** 2 + (y - a1 * sin(q1)) ** 2
         s = z - d1

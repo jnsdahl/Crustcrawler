@@ -3,11 +3,26 @@ from math import atan2, cos, sin, pi
 
 class Block:
     def __init__(self, corners):
-        self.x, self.y, self.z = self.img2base_transform(
-            corners[2][0] - (corners[0][0] - corners[2][0]) / 2,
-            corners[3][1] - (corners[1][1] - corners[3][1]) / 2
-        )
+        x1 = corners[0][0]
+        x2 = corners[1][0]
+        x3 = corners[2][0]
+        x4 = corners[3][0]
 
+        y1 = corners[0][1]
+        y2 = corners[1][1]
+        y3 = corners[2][1]
+        y4 = corners[3][1]
+
+        a1 = (y3-y1)/float(x3-x1)
+        a2 = (y4-y2)/float(x4-x2)
+
+        b1 = y1 - a1*x1
+        b2 = y2 - a2*x2
+
+        xc = (b2-b1)/float(a1-a2)
+        yc = a1*xc+b1
+
+        self.x, self.y, self.z = self.img2base_transform(xc, yc)
         self.theta = self.find_orientation(corners)
 
     # Transforms a point on the image to the robot base frame
@@ -17,8 +32,8 @@ class Block:
         point = point[:, None]
 
         # Transform point in table frame to robot base frame
-        tx = -36
-        ty = 37
+        tx = -33
+        ty = 35
         tz = 0
         thetax = pi
         thetaz = pi / 2
@@ -49,12 +64,14 @@ class Block:
             corner1 = self.img2base_transform(block_corners[i][0], block_corners[i][1])
             corner2 = self.img2base_transform(block_corners[i+1][0], block_corners[i+1][1])
 
-            dx = corner1[0] - corner2[0]
-            dy = corner1[1] - corner2[1]
+            dx = corner2[0] - corner1[0]
+            dy = corner2[1] - corner1[1]
 
             theta = atan2(dy, dx)
 
-            if theta < min_theta or i == 0:
+            print str(dx) + ", " + str(dy) + ", " + str(theta * 180 / pi)
+
+            if abs(theta) < min_theta or i == 0:
                 min_theta = theta
 
         return min_theta
