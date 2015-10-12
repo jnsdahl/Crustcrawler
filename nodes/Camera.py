@@ -18,7 +18,7 @@ class Camera:
         img = img[y:y+345, x:x+605]
 
         # Hide robot
-        cv2.rectangle(img, (220, 210), (380, 345), 0, -1)
+        cv2.rectangle(img, (0, 210), (605, 345), 0, -1)
 
         return img
 

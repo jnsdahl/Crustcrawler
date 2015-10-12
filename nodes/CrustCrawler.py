@@ -22,18 +22,16 @@ class CrustCrawler:
         rospy.sleep(.3)
 
     def close_gripper(self):
-        self.gripper_pub.publish(0.6)
+        self.gripper_pub.publish(0.7)
         rospy.sleep(.3)
 
-    def inverse_kinematics(self, x, y, z, theta):
+    def inverse_kinematics(self, x, y, z, thetas):
         d1 = 10.0  # cm (height of 2nd joint)
         a1 = 0.0   # (distance along "y-axis" to 2nd joint)
         a2 = 20.0  # (distance between 2nd and 3rd joints)
         d4 = 20.0  # (distance from 3rd joint to gripper center - all inclusive, ie. also 4th joint)
 
         q1 = atan2(y, x)
-
-        print "q1: " + str(q1 * 180 / pi)
 
         # calculation of q2 and q3
         r2 = (x - a1 * cos(q1)) ** 2 + (y - a1 * sin(q1)) ** 2
@@ -44,13 +42,19 @@ class CrustCrawler:
 
         q2 = atan2(s, sqrt(r2)) - atan2(d4 * sin(q3), a2 + d4 * cos(q3)) - pi / 2
 
-        q4 = theta + q1
+        q4_1 = abs(thetas[0]) - abs(q1)
+        q4_2 = abs(thetas[1]) - abs(q1)
+
+        q4 = q4_1
+
+        if abs(q4_2) < abs(q4_1):
+            q4 = q4_2
 
         return q1, q2, q3, q4
 
-    def move_to(self, x, y, z, theta):
+    def move_to(self, x, y, z, thetas):
         jtp = JointTrajectoryPoint(
-            positions=self.inverse_kinematics(x, y, z, theta),
+            positions=self.inverse_kinematics(x, y, z, thetas),
             velocities=[0.5] * 4,
             time_from_start=rospy.Duration(2)
         )
@@ -65,6 +69,26 @@ class CrustCrawler:
         self.client.send_goal(goal)
         self.client.wait_for_result()
 
+    def pick_up_block(self, block):
+        self.move_to(block.x, block.y, block.z, block.thetas)
+        self.open_gripper()
+        self.move_to(block.x, block.y, block.z - 12, block.thetas)
+        self.close_gripper()
+        self.move_to(block.x, block.y, block.z + 5, block.thetas)
+
+    def place_block(self, block, x, y):
+        self.pick_up_block(block)
+        self.move_to(x, y, 10, [0, 0])
+        self.move_to(x, y, 1, [0, 0])
+        self.open_gripper()
+        self.move_to(x, y, 10, [0, 0])
+
+    def place_block_right(self, block):
+        self.place_block(block, 0, 20)
+
+    def place_block_left(self, block):
+        self.place_block(block, 0, -20)
+
     def reset(self):
-        self.move_to(0, 0, 50, 0)
+        self.move_to(0, 0, 50, [0, 0])
         rospy.sleep(1)

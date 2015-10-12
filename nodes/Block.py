@@ -23,7 +23,7 @@ class Block:
         yc = a1*xc+b1
 
         self.x, self.y, self.z = self.img2base_transform(xc, yc)
-        self.theta = self.find_orientation(corners)
+        self.thetas = self.find_orientations(corners)
 
     # Transforms a point on the image to the robot base frame
     def img2base_transform(self, x, y):
@@ -57,8 +57,8 @@ class Block:
         return point[0], point[1], point[2]
 
     # Find orientation of a block
-    def find_orientation(self, block_corners):
-        min_theta = 0
+    def find_orientations(self, block_corners):
+        thetas = []
 
         for i in range(0, 2):
             corner1 = self.img2base_transform(block_corners[i][0], block_corners[i][1])
@@ -69,9 +69,6 @@ class Block:
 
             theta = atan2(dy, dx)
 
-            print str(dx) + ", " + str(dy) + ", " + str(theta * 180 / pi)
+            thetas.append(theta)
 
-            if abs(theta) < min_theta or i == 0:
-                min_theta = theta
-
-        return min_theta
+        return thetas

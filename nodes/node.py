@@ -10,13 +10,23 @@ if __name__ == "__main__":
     crustCrawler = CrustCrawler()
     camera = Camera()
 
-    crustCrawler.reset()
+    right = []
+    left = []
 
-    blocks = camera.get_blocks()
-
-    for block in blocks:
-        crustCrawler.move_to(block.x, block.y, block.z, block.theta)
-        crustCrawler.open_gripper()
-        crustCrawler.move_to(block.x, block.y, block.z - 12, block.theta)
-        crustCrawler.close_gripper()
+    while True:
         crustCrawler.reset()
+        blocks = camera.get_blocks()
+
+        if len(blocks) == 0:
+            break
+
+        for block in blocks:
+            if len(right) == 0:
+                crustCrawler.place_block_right(block)
+                right.append(block)
+            else:
+                crustCrawler.place_block_left(block)
+
+
+
+
