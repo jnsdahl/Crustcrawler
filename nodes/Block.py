@@ -17,8 +17,8 @@ class Block:
         point = point[:, None]
 
         # Transform point in table frame to robot base frame
-        tx = -34
-        ty = 35
+        tx = -36
+        ty = 37
         tz = 0
         thetax = pi
         thetaz = pi / 2

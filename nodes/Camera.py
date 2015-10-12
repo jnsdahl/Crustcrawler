@@ -14,7 +14,7 @@ class Camera:
     def preprocess(self, img):
         # Crop to table
         x = 0
-        y = 48
+        y = 80
         img = img[y:y+345, x:x+605]
 
         # Hide robot
