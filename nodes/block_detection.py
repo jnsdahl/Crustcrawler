@@ -32,7 +32,7 @@ def block_from_contour(contour):
     height = np.linalg.norm(block[1] - block[2])
     wh_ratio = width/height if width/height <= 1 else height/width
 
-    if 800 < area < 2500 and 10 < epsilon < 22 and wh_ratio > 0.6:
+    if 600 < area < 2500 and 10 < epsilon < 22 and wh_ratio > 0.6:
         return block
     else:
         return []

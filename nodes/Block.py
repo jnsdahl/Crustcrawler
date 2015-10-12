@@ -1,5 +1,6 @@
 import numpy as np
 from math import atan2, cos, sin, pi
+import cv2
 
 class Block:
     def __init__(self, corners, img):
@@ -22,6 +23,7 @@ class Block:
         xc = (b2-b1)/float(a1-a2)
         yc = a1*xc+b1
 
+        cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
         color = [0, 0, 0]
         c = 0
 
@@ -37,11 +39,11 @@ class Block:
         color[2] = color[2]/c
 
         self.color = color
+        self.corners = corners
         self.x, self.y, self.z = self.img2base_transform(xc, yc)
-        self.thetas = self.find_orientations(corners)
 
     def same_color(self, color):
-        th = 1000
+        th = 70
         return abs(self.color[0] - color[0]) < th and abs(self.color[1] - color[1]) < th and abs(self.color[2] - color[2]) < th
 
     # Transforms a point on the image to the robot base frame
@@ -51,17 +53,17 @@ class Block:
         point = point[:, None]
 
         # Transform point in table frame to robot base frame
-        tx = -33
-        ty = 35
+        tx = -33.5
+        ty = 35.5
         tz = 0
         thetax = pi
         thetaz = pi / 2
 
         A = np.matrix([
-            [1, 0,           0,            tx],
-            [0, cos(thetax), -sin(thetax), ty],
-            [0, sin(thetax), cos(thetax),  tz],
-            [0, 0,           0,            1 ]
+            [1, 0,            0,            tx],
+            [0, cos(thetax),  sin(thetax),  ty],
+            [0, -sin(thetax), cos(thetax),  tz],
+            [0, 0,            0,            1 ]
         ])
 
         B = np.matrix([
@@ -75,19 +77,39 @@ class Block:
 
         return point[0], point[1], point[2]
 
+    def img2joint1_transform(self, x, y, q1):
+        x, y, z = self.img2base_transform(x, y)
+
+        # Transform point on image to table frame
+        point = np.array([x, y, z, 1])
+        point = point[:, None]
+
+        # Transform point in table frame to robot base frame
+        A = np.matrix([
+            [cos(q1),  sin(q1), 0, 0],
+            [-sin(q1), cos(q1), 0, 0],
+            [0,            0,   1, 0],
+            [0,            0,   0, 1]
+        ])
+
+        point = A.dot(point)
+
+        return point[0], point[1], point[2]
+
     # Find orientation of a block
-    def find_orientations(self, block_corners):
-        thetas = []
+    def find_orientation(self, q1):
+        min_theta = 0
 
         for i in range(0, 2):
-            corner1 = self.img2base_transform(block_corners[i][0], block_corners[i][1])
-            corner2 = self.img2base_transform(block_corners[i+1][0], block_corners[i+1][1])
+            corner1 = self.img2joint1_transform(self.corners[i][0], self.corners[i][1], q1)
+            corner2 = self.img2joint1_transform(self.corners[i+1][0], self.corners[i+1][1], q1)
 
             dx = corner2[0] - corner1[0]
             dy = corner2[1] - corner1[1]
 
             theta = atan2(dy, dx)
 
-            thetas.append(theta)
+            if abs(theta) < abs(min_theta) or i == 0:
+                min_theta = theta
 
-        return thetas
+        return min_theta

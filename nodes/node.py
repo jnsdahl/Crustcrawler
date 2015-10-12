@@ -27,7 +27,3 @@ if __name__ == "__main__":
             else:
                 crustCrawler.place_block_left(block, len(left))
                 left.append(block)
-
-
-
-
