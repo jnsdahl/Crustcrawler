@@ -17,7 +17,7 @@ if __name__ == "__main__":
     while True:
         crustCrawler.reset()
         blocks, img = camera.get_blocks()
-        cv2.imshow('Camera', img), cv2.waitKey(4)
+        cv2.imshow('Camera', img), cv2.waitKey(40)
 
         for block in blocks:
             if len(right) == 0 or block.same_color(right[0].color):
