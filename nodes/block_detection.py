@@ -32,9 +32,10 @@ def block_from_contour(contour):
     height = np.linalg.norm(block[1] - block[2])
     wh_ratio = width/height if width/height <= 1 else height/width
 
-    if 600 < area < 2500 and 10 < epsilon < 22 and wh_ratio > 0.6:
+    if 300 < area < 800 and 7 < epsilon < 13 and wh_ratio > 0.7:
         return block
     else:
+
         return []
 
 
@@ -77,23 +78,15 @@ def find_blocks(image):
     # Detect edges
     img = cv2.Canny(img, 35, 100)
 
-    # Dilate edges
-    kernel = cv2.getStructuringElement(cv2.MORPH_CROSS, (3, 3))
-    img = cv2.dilate(img, kernel, iterations=3)
-
     # Close edges
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))
     img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
-
-    # Erode edges
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (4, 4))
-    img = cv2.erode(img, kernel, iterations=1)
 
     # Find contours
     contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Draw contours
-    #draw_contours(contours, hierarchy[0], image)
+    draw_contours(contours, hierarchy[0], image)
 
     # Find blocks from contours
     blocks = blocks_from_contour_tree(contours, hierarchy[0])

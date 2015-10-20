@@ -15,7 +15,7 @@ class Camera:
         # Crop to table
         x = 0
         y = 80
-        img = img[y:y+345, x:x+605]
+        img = img[y:y+205, x:x+605]
 
         # Hide robot
         cv2.rectangle(img, (0, 210), (605, 345), 0, -1)

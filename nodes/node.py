@@ -13,17 +13,20 @@ if __name__ == "__main__":
     right = []
     left = []
 
-    while True:
-        crustCrawler.reset()
-        blocks = camera.get_blocks()
+    crustCrawler.reset()
+    blocks = camera.get_blocks()
 
-        if len(blocks) == 0:
-            break
+    #while True:
+    #    crustCrawler.reset()
+    #    blocks = camera.get_blocks()
 
-        for block in blocks:
-            if len(right) == 0 or block.same_color(right[0].color):
-                crustCrawler.place_block_right(block, len(right))
-                right.append(block)
-            else:
-                crustCrawler.place_block_left(block, len(left))
-                left.append(block)
+    #    if len(blocks) == 0:
+    #        break
+
+        #for block in blocks:
+        #    if len(right) == 0 or block.same_color(right[0].color):
+        #        crustCrawler.place_block_right(block, len(right))
+        #        right.append(block)
+        #    else:
+        #        crustCrawler.place_block_left(block, len(left))
+        #        left.append(block)
