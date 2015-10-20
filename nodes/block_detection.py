@@ -69,24 +69,20 @@ def find_blocks(image):
     # Smoothen image
     img = cv2.adaptiveBilateralFilter(img, (9, 9), 100)
 
-    # Sharpen image with laplacian
-    lp = cv2.Laplacian(img, cv2.CV_8U)
-
-    ret, lp = cv2.threshold(lp, 10, 255, cv2.THRESH_BINARY)
-    img += 12*lp
-
     # Detect edges
     img = cv2.Canny(img, 35, 100)
 
     # Close edges
-    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (10, 10))
-    img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
+    kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+    img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel, iterations=3)
+
+    cv2.imshow('', img), cv2.waitKey(0)
 
     # Find contours
     contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Draw contours
-    draw_contours(contours, hierarchy[0], image)
+    #draw_contours(contours, hierarchy[0], image)
 
     # Find blocks from contours
     blocks = blocks_from_contour_tree(contours, hierarchy[0])
