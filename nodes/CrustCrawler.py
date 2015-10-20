@@ -116,10 +116,10 @@ class CrustCrawler:
         self.move_to_point(x, y, 10)
 
     def place_block_right(self, block, position):
-        self.place_block(block, 0, -3 - 15 * position)
+        self.place_block(block, 0, -3 - 7 * (position % 3))
 
     def place_block_left(self, block, position):
-        self.place_block(block, 0, 3 + 15 * position)
+        self.place_block(block, 0, 3 + 7 * (position % 3))
 
     def reset(self):
         self.move_to_point(0, 0, 50)

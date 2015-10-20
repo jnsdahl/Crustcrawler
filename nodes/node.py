@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import rospy
+import cv2
 from CrustCrawler import CrustCrawler
 from Camera import Camera
 
@@ -13,20 +14,15 @@ if __name__ == "__main__":
     right = []
     left = []
 
-    crustCrawler.reset()
-    blocks = camera.get_blocks()
-
     while True:
         crustCrawler.reset()
-        blocks = camera.get_blocks()
-
-        if len(blocks) == 0:
-            break
+        blocks, img = camera.get_blocks()
+        cv2.imshow('Camera', img), cv2.waitKey(4)
 
         for block in blocks:
             if len(right) == 0 or block.same_color(right[0].color):
                 crustCrawler.place_block_right(block, len(right))
                 right.append(block)
-            else:
+            elif len(left) == 0 or block.same_color(left[0].color):
                 crustCrawler.place_block_left(block, len(left))
                 left.append(block)

@@ -76,8 +76,6 @@ def find_blocks(image):
     kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel, iterations=3)
 
-    cv2.imshow('', img), cv2.waitKey(0)
-
     # Find contours
     contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 

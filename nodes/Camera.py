@@ -35,9 +35,7 @@ class Camera:
 
             blocks.append(block)
 
-        cv2.imshow('Camera', img), cv2.waitKey(0)
-
-        return blocks
+        return blocks, img
 
     def get_raw_image(self):
         stream = urllib.urlopen(self.url)
